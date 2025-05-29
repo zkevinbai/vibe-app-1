@@ -1,0 +1,3 @@
+# 1. Introduction
+
+This Product Requirements Document (PRD) outlines the specifications for **ImgxAI**, a web-based application designed to generate images using OpenAI's `gpt-image-1` model. The application aims to provide users with an intuitive interface to input prompts and receive generated images, similar to platforms like Midjourney. This document serves as a comprehensive guide for the development team, ensuring alignment on the project's objectives, features, and technical requirements. 

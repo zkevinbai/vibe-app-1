@@ -1,0 +1,172 @@
+<PRD>
+
+# ImgxAI Product Requirements Document
+
+## 1. Introduction
+
+This Product Requirements Document (PRD) outlines the specifications for **ImgxAI**, a web-based application designed to generate images using OpenAI's `gpt-image-1` model. The application aims to provide users with an intuitive interface to input prompts and receive generated images, similar to platforms like Midjourney. This document serves as a comprehensive guide for the development team, ensuring alignment on the project's objectives, features, and technical requirements.
+
+## 2. Product overview
+
+**ImgxAI** is a user-centric application that enables users to generate images based on textual prompts. Leveraging OpenAI's `gpt-image-1` model, the application offers a seamless experience where users can input prompts, view generated images in a responsive timeline, and manage their image generation history. The platform emphasizes ease of use, responsiveness across devices, and efficient image management.
+
+## 3. Goals and objectives
+
+* **Primary Goal**: Develop a responsive web application that allows users to generate and manage images using OpenAI's `gpt-image-1` model.
+
+* **Objectives**:
+
+  * Integrate OpenAI's image generation API with customizable parameters.
+  * Design a unified interface combining prompt input and result display.
+  * Implement a responsive, scrollable timeline for displaying generated images.
+  * Provide filtering options to manage and sort generated images.
+  * Enable users to download images and view detailed prompt information.
+  * Store images and API keys securely in the browser's local storage.([Wikipedia][1])
+
+## 4. Target audience
+
+* **Primary Users**:
+
+  * Digital artists and designers seeking AI-generated imagery.
+  * Content creators and marketers requiring visual content.
+  * Developers and tech enthusiasts exploring AI image generation.([apidog][2], [Lifewire][3])
+
+* **User Characteristics**:
+
+  * Familiarity with web applications.
+  * Interest in AI-driven tools and technologies.
+  * Desire for customizable and efficient image generation solutions.
+
+## 5. Features and requirements
+
+### 5.1. Integration with OpenAI APIs
+
+* **Model**: Utilize OpenAI's `gpt-image-1` for image generation.
+* **API Parameters**:
+
+  * `quality`: Options include `low`, `mid`, or `high`.
+  * `aspect_ratio`: Choices are `1024x1024`, `1536x1024`, or `1024x1536`.
+  * `output_compression`: Range from 0% to 100%; default is 50%.
+  * `output_format`: Set to `webp`.
+  * `moderation`: Set to `low`.
+  * `n`: Number of images to generate per prompt.
+  * `response_format`: Use `b64_json`.
+  * `model`: Fixed as `gpt-image-1`.
+
+### 5.2. User interface and experience
+
+* **Chat Interface**:
+
+  * Single input field for prompt submission.
+  * Display of prompt history and generated images.([apidog][2])
+
+* **Timeline Display**:
+
+  * Infinite scrolling with pagination.
+  * Responsive grid layout:
+
+    * Mobile: 1 column.
+    * Tablet: 2 columns.
+    * Desktop: 4 columns.
+  * Images displayed in their correct aspect ratio within square containers.
+  * Clicking an image allows for download.
+
+* **Filtering Options**:
+
+  * Filter by date, status, aspect ratio.
+  * Sort by newest or oldest first.
+
+* **Prompt Details View**:
+
+  * Display all images associated with a prompt.
+  * Show metadata: jobId, creation date, status, image count, dimensions, model, quality.
+  * Options to re-run the prompt and download images.
+
+### 5.3. Data storage
+
+* **Local Storage**:
+
+  * Store generated images in the browser's local storage.
+  * Save the user's OpenAI API key securely in local storage.
+
+### 5.4. Navigation and settings
+
+* **Navigation Bar**:
+
+  * Include a settings button.([Wikipedia][1])
+
+* **Settings Menu**:
+
+  * Input field for the OpenAI API key.
+  * Option to clear local storage data.([en.wikipedia.org][4])
+
+## 6. User stories and acceptance criteria
+
+| Requirement ID | User Story                                                                      | Acceptance Criteria                                                                                  |
+| -------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| ST-101         | As a user, I want to input a prompt and receive generated images.               | Upon submitting a prompt, the application displays the generated images in the timeline.             |
+| ST-102         | As a user, I want to view my prompt history.                                    | The application maintains and displays a history of submitted prompts.                               |
+| ST-103         | As a user, I want to filter generated images by date, status, and aspect ratio. | The filtering options correctly display images based on the selected criteria.                       |
+| ST-104         | As a user, I want to sort images by newest or oldest first.                     | The timeline rearranges images according to the selected sort order.                                 |
+| ST-105         | As a user, I want to download images by clicking on them.                       | Clicking an image initiates a download of the image in webp format.                                  |
+| ST-106         | As a user, I want to view detailed information about a prompt.                  | The prompt details view displays all associated images and metadata.                                 |
+| ST-107         | As a user, I want to re-run a previous prompt.                                  | Selecting a past prompt and choosing to re-run it generates new images based on the same parameters. |
+| ST-108         | As a user, I want my generated images to be stored locally.                     | Generated images are saved in the browser's local storage and persist across sessions.               |
+| ST-109         | As a user, I want to securely store my OpenAI API key.                          | The API key is saved in local storage and used for subsequent API calls.                             |
+| ST-110         | As a user, I want to clear my local storage data.                               | The settings menu provides an option to clear all stored data, including images and API key.         |
+| ST-111         | As a user, I want the application to be responsive across devices.              | The application adjusts its layout appropriately for mobile, tablet, and desktop devices.            |
+| ST-112         | As a user, I want to submit prompts with customizable parameters.               | The prompt input allows setting parameters like quality, aspect ratio, and number of images.         |
+| ST-113         | As a user, I want to view images in their correct aspect ratio.                 | Images are displayed within square containers, maintaining their original aspect ratios.             |
+| ST-114         | As a user, I want to manage my prompt submissions efficiently.                  | The application handles multiple prompt submissions and displays them appropriately in the timeline. |
+| ST-115         | As a user, I want to access a settings menu for configurations.                 | The navigation bar includes a settings button that opens the settings menu.                          |
+
+## 7. Technical requirements / stack
+
+* **Frontend**:
+
+  * Next.js 15
+  * TailwindCSS
+  * Lucide Icons
+  * React Hook Form with Zod
+  * Shadcn UI([Wikipedia][1])
+
+* **API Integration**:
+
+  * OpenAI's `gpt-image-1` model via REST API.
+
+* **Storage**:
+
+  * Browser's local storage for images and API key.
+
+* **Deployment**:
+
+  * Host on a platform supporting Next.js applications (e.g., Vercel).
+
+## 8. Design and user interface
+
+* **Layout**:
+
+  * Unified interface combining prompt input and image timeline.
+  * Responsive design adapting to various screen sizes.
+
+* **Components**:
+
+  * Prompt input field with parameter settings.
+  * Scrollable timeline displaying generated images.
+  * Filter and sort options for managing images.
+  * Prompt details view showing image metadata and actions.
+  * Settings menu for API key input and data management.
+
+* **Styling**:
+
+  * Utilize TailwindCSS for consistent and responsive styling.
+  * Incorporate Lucide Icons for intuitive visual cues.
+  * Maintain a clean and minimalistic aesthetic.([Wikipedia][1])
+
+</PRD>
+::contentReference[oaicite:204]{index=204}
+
+[1]: https://fr.wikipedia.org/wiki/Midjourney?utm_source=chatgpt.com "Midjourney"
+[2]: https://apidog.com/blog/use-openais-gpt-image-1-api/?utm_source=chatgpt.com "How to Use OpenAI's Image Generation API (gpt-image-1) - Apidog"
+[3]: https://www.lifewire.com/midjourney-basics-8697054?utm_source=chatgpt.com "How to Use Midjourney"
+[4]: https://en.wikipedia.org/wiki/DALL-E?utm_source=chatgpt.com "DALL-E"

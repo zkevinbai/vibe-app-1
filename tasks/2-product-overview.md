@@ -1,0 +1,3 @@
+# 2. Product Overview
+
+**ImgxAI** is a user-centric application that enables users to generate images based on textual prompts. Leveraging OpenAI's `gpt-image-1` model, the application offers a seamless experience where users can input prompts, view generated images in a responsive timeline, and manage their image generation history. The platform emphasizes ease of use, responsiveness across devices, and efficient image management. 

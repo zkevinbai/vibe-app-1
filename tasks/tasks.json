@@ -1,0 +1,118 @@
+{
+  "project": "ImgxAI",
+  "description": "Web app for AI image generation using OpenAI's gpt-image-1 model.",
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Project Initialization & Stack Setup",
+      "file": null,
+      "status": "complete",
+      "subtasks": [
+        {"id": "T1.1", "title": "Initialize Next.js 15 project", "status": "complete"},
+        {"id": "T1.2", "title": "Set up TailwindCSS", "status": "complete"},
+        {"id": "T1.3", "title": "Install Lucide Icons", "status": "complete"},
+        {"id": "T1.4", "title": "Install React Hook Form with Zod", "status": "complete"},
+        {"id": "T1.5", "title": "Install Shadcn UI", "status": "complete"}
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "API Integration",
+      "file": "5-features-requirements.md",
+      "status": "complete",
+      "subtasks": [
+        {"id": "T2.1", "title": "Set up API client and endpoint typing", "status": "complete"},
+        {"id": "T2.2", "title": "Implement request/response validation", "status": "complete"},
+        {"id": "T2.3", "title": "Support all required API parameters (quality, aspect_ratio, output_compression, output_format, moderation, n, response_format, model)", "status": "complete"},
+        {"id": "T2.4", "title": "Integrate API key from local storage", "status": "complete", "requirement_ids": ["ST-109"]},
+        {"id": "T2.5", "title": "Implement error and loading state handling", "status": "complete"},
+        {"id": "T2.6", "title": "Write unit tests for API utility", "status": "pending"}
+      ]
+    },
+    {
+      "id": "T3",
+      "title": "Core Features",
+      "file": "5-features-requirements.md",
+      "status": "complete",
+      "subtasks": [
+        {"id": "T3.1", "title": "Prompt input UI component", "status": "complete", "subtasks": [
+          {"id": "T3.1.1", "title": "Prompt text input field", "status": "complete"},
+          {"id": "T3.1.2", "title": "Parameter controls (quality, aspect ratio, n)", "status": "complete"},
+          {"id": "T3.1.3", "title": "Form validation with Zod", "status": "pending"},
+          {"id": "T3.1.4", "title": "Form submission logic", "status": "complete"}
+        ]},
+        {"id": "T3.2", "title": "Responsive timeline/grid for images", "status": "complete", "subtasks": [
+          {"id": "T3.2.1", "title": "Grid component for images", "status": "complete"},
+          {"id": "T3.2.2", "title": "Responsive breakpoints (mobile/tablet/desktop)", "status": "complete"},
+          {"id": "T3.2.3", "title": "Image rendering with correct aspect ratio", "status": "complete"},
+          {"id": "T3.2.4", "title": "Empty/loading state UI", "status": "pending"}
+        ]},
+        {"id": "T3.3", "title": "Infinite scroll/pagination", "status": "complete", "subtasks": [
+          {"id": "T3.3.1", "title": "Scroll detection logic", "status": "pending"},
+          {"id": "T3.3.2", "title": "Paginated data fetching", "status": "complete"},
+          {"id": "T3.3.3", "title": "UI feedback for loading more", "status": "complete"}
+        ]},
+        {"id": "T3.4", "title": "Image download on click", "status": "complete", "subtasks": [
+          {"id": "T3.4.1", "title": "Single image download", "status": "complete"},
+          {"id": "T3.4.2", "title": "Download feedback UI", "status": "pending"}
+        ]},
+        {"id": "T3.5", "title": "Filtering and sorting options", "status": "complete", "subtasks": [
+          {"id": "T3.5.1", "title": "Filter UI (date, status, aspect ratio)", "status": "complete"},
+          {"id": "T3.5.2", "title": "Filter logic implementation", "status": "complete"},
+          {"id": "T3.5.3", "title": "Sort UI (newest/oldest)", "status": "complete"},
+          {"id": "T3.5.4", "title": "Sort logic implementation", "status": "complete"}
+        ]},
+        {"id": "T3.6", "title": "Prompt history and details view", "status": "complete", "subtasks": [
+          {"id": "T3.6.1", "title": "Prompt history list UI", "status": "complete"},
+          {"id": "T3.6.2", "title": "Prompt details modal/page", "status": "complete"},
+          {"id": "T3.6.3", "title": "Metadata display (jobId, date, status, etc.)", "status": "pending"},
+          {"id": "T3.6.4", "title": "Re-run prompt action", "status": "complete"},
+          {"id": "T3.6.5", "title": "Download all images for prompt", "status": "complete"}
+        ]}
+      ]
+    },
+    {
+      "id": "T4",
+      "title": "Data Storage",
+      "file": "5-features-requirements.md",
+      "status": "complete",
+      "subtasks": [
+        {"id": "T4.1", "title": "Store images in local storage", "status": "complete", "requirement_ids": ["ST-108"]},
+        {"id": "T4.2", "title": "Store API key securely in local storage", "status": "complete", "requirement_ids": ["ST-109"]}
+      ]
+    },
+    {
+      "id": "T5",
+      "title": "Navigation & Settings",
+      "file": "5-features-requirements.md",
+      "status": "complete",
+      "subtasks": [
+        {"id": "T5.1", "title": "Navigation bar with settings button", "status": "complete", "requirement_ids": ["ST-115"]},
+        {"id": "T5.2", "title": "Settings menu for API key and clear data", "status": "complete", "requirement_ids": ["ST-109", "ST-110"]}
+      ]
+    },
+    {
+      "id": "T6",
+      "title": "Design & UI Implementation",
+      "file": "8-design-ui.md",
+      "status": "pending",
+      "subtasks": [
+        {"id": "T6.1", "title": "Implement responsive layout and styling", "status": "pending", "requirement_ids": ["ST-111"]},
+        {"id": "T6.2", "title": "Use Lucide Icons and TailwindCSS", "status": "pending"},
+        {"id": "T6.3", "title": "Maintain clean, minimalistic look", "status": "pending"}
+      ]
+    },
+    {
+      "id": "T7",
+      "title": "Deployment & QA",
+      "file": null,
+      "status": "pending",
+      "subtasks": [
+        {"id": "T7.1", "title": "Set up deployment (e.g., Vercel)", "status": "pending"},
+        {"id": "T7.2", "title": "Test all user stories/acceptance criteria", "status": "pending"},
+        {"id": "T7.3", "title": "Test local storage persistence", "status": "pending"},
+        {"id": "T7.4", "title": "Test API error handling and edge cases", "status": "pending"}
+      ]
+    }
+  ]
+} 
