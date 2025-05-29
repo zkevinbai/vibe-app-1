@@ -3,6 +3,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import PromptInput, { PromptInputValues } from './components/PromptInput';
 import ImageTimeline, { TimelineImage } from './components/ImageTimeline';
 import { generateImagesWithOpenAI } from '../lib/openai';
+import { Settings, Trash2, RefreshCw, Download } from 'lucide-react';
 
 // PromptHistory component
 function PromptHistory({ history, onSelect, onDelete }: {
@@ -22,17 +23,18 @@ function PromptHistory({ history, onSelect, onDelete }: {
             </span>
             <div className="flex gap-1">
               <button
-                className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                className="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 flex items-center gap-1"
                 onClick={() => onSelect(item)}
+                title="Re-run"
               >
-                Re-run
+                <RefreshCw size={14} /> Re-run
               </button>
               <button
-                className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200"
+                className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 flex items-center gap-1"
                 onClick={() => onDelete(item.prompt)}
                 title="Delete prompt"
               >
-                Delete
+                <Trash2 size={14} /> Delete
               </button>
             </div>
           </li>
@@ -90,12 +92,12 @@ function PromptDetailsModal({ open, onClose, prompt, images, onRerun, onDownload
       <div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 rounded shadow p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-2">
           <div className="font-semibold">Prompt Details</div>
-          <button onClick={onClose} className="text-gray-500 hover:text-black">✕</button>
+          <button onClick={onClose} className="text-gray-500 hover:text-black" title="Close">✕</button>
         </div>
         <div className="mb-2"><span className="font-semibold">Prompt:</span> {prompt.prompt}</div>
         <div className="mb-2 text-xs text-gray-500">Quality: {prompt.quality}, Aspect Ratio: {prompt.aspect_ratio}, n: {prompt.n}</div>
         {/* Metadata display */}
-        <div className="mb-2 text-xs">
+        <div className="mb-2 text-xs grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-1">
           <div><span className="font-semibold">jobId:</span> {meta.jobId || 'N/A'}</div>
           <div><span className="font-semibold">Created:</span> {meta.createdAt ? new Date(meta.createdAt).toLocaleString() : 'N/A'}</div>
           <div><span className="font-semibold">Status:</span> {meta.status || 'N/A'}</div>
@@ -104,9 +106,13 @@ function PromptDetailsModal({ open, onClose, prompt, images, onRerun, onDownload
           <div><span className="font-semibold">Model:</span> {meta.model || 'gpt-image-1'}</div>
           <div><span className="font-semibold">Quality:</span> {meta.quality || prompt.quality}</div>
         </div>
-        <div className="mb-2 flex gap-2">
-          <button className="bg-blue-600 text-white px-3 py-1 rounded" onClick={onRerun}>Re-run</button>
-          <button className="bg-green-600 text-white px-3 py-1 rounded" onClick={onDownloadAll}>Download All</button>
+        <div className="mb-2 flex gap-2 flex-wrap">
+          <button className="bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1" onClick={onRerun} title="Re-run">
+            <RefreshCw size={16} /> Re-run
+          </button>
+          <button className="bg-green-600 text-white px-3 py-1 rounded flex items-center gap-1" onClick={onDownloadAll} title="Download All">
+            <Download size={16} /> Download All
+          </button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {images.map((img, idx) => (
@@ -116,6 +122,10 @@ function PromptDetailsModal({ open, onClose, prompt, images, onRerun, onDownload
       </div>
     </div>
   );
+}
+
+function isErrorWithMessage(e: unknown): e is { message: string } {
+  return typeof e === 'object' && e !== null && 'message' in e && typeof (e as { message?: unknown }).message === 'string';
 }
 
 export default function HomePage() {
@@ -173,8 +183,12 @@ export default function HomePage() {
         })),
         ...prev,
       ]);
-    } catch (e: any) {
-      setError(e.message || 'Failed to generate images.');
+    } catch (e: unknown) {
+      if (isErrorWithMessage(e)) {
+        setError(e.message);
+      } else {
+        setError('Failed to generate images.');
+      }
     } finally {
       setLoading(false);
     }
@@ -251,11 +265,13 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center">
+    <main className="min-h-screen bg-gray-700 flex flex-col items-center">
       {/* Navigation bar */}
-      <nav className="w-full bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 shadow flex items-center justify-between px-6 py-3 mb-4">
+      <nav className="w-full bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 shadow flex items-center justify-between px-2 sm:px-6 py-3 mb-4">
         <div className="font-bold text-lg">ImgxAI</div>
-        <button className="bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 px-3 py-1 rounded" onClick={() => setSettingsOpen(true)}>Settings</button>
+        <button className="bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100 px-2 sm:px-3 py-1 rounded flex items-center gap-1" onClick={() => setSettingsOpen(true)}>
+          <Settings size={18} /> <span className="hidden sm:inline">Settings</span>
+        </button>
       </nav>
       <div className="w-full max-w-xl">
         <PromptHistory history={promptHistory} onSelect={handleHistorySelect} onDelete={handleDeletePrompt} />
@@ -266,15 +282,15 @@ export default function HomePage() {
       <div className="w-full max-w-6xl">
         {/* Filter and sort controls */}
         <div className="flex flex-wrap gap-2 items-center mb-2 px-4">
-          <label>Aspect Ratio:</label>
-          <select value={filterAspect} onChange={e => setFilterAspect(e.target.value)} className="border rounded p-1">
+          <label className="text-gray-900 dark:text-gray-100">Aspect Ratio:</label>
+          <select value={filterAspect} onChange={e => setFilterAspect(e.target.value as '1024x1024' | '1536x1024' | '1024x1536' | 'all')} className="border border-gray-300 rounded p-1 bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100">
             <option value="all">All</option>
             <option value="1024x1024">1024x1024</option>
             <option value="1536x1024">1536x1024</option>
             <option value="1024x1536">1024x1536</option>
           </select>
-          <label className="ml-4">Sort:</label>
-          <select value={sortOrder} onChange={e => setSortOrder(e.target.value as 'newest' | 'oldest')} className="border rounded p-1">
+          <label className="ml-4 text-gray-900 dark:text-gray-100">Sort:</label>
+          <select value={sortOrder} onChange={e => setSortOrder(e.target.value as 'newest' | 'oldest')} className="border border-gray-300 rounded p-1 bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100">
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
           </select>
