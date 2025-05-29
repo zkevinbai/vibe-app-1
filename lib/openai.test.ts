@@ -1,11 +1,29 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { generateImagesWithOpenAI } from './openai';
 
-global.fetch = vi.fn();
+// Define a type for the mock localStorage
+interface MockLocalStorage {
+  getItem: ReturnType<typeof vi.fn>;
+  setItem: ReturnType<typeof vi.fn>;
+  clear: ReturnType<typeof vi.fn>;
+}
+
+// Define a type for the mock fetch function's resolved value
+interface MockFetchResponse {
+  ok: boolean;
+  json: () => Promise<{ data: { b64_json: string }[] } | { error: { message: string } }>; // Refined return type
+}
+
+// Mock the global fetch and localStorage
+const mockFetch = vi.fn();
+const originalLocalStorage = global.localStorage;
+let localStorageMock: MockLocalStorage;
+
+// Cast only when assigning to global to satisfy TypeScript type constraints for global.fetch
+// The mockFetch function itself retains the correct Vitest Mock typings.
+global.fetch = mockFetch
 
 describe('generateImagesWithOpenAI', () => {
-  const originalLocalStorage = global.localStorage;
-  let localStorageMock: any;
 
   beforeEach(() => {
     localStorageMock = {
@@ -13,7 +31,8 @@ describe('generateImagesWithOpenAI', () => {
       setItem: vi.fn(),
       clear: vi.fn(),
     };
-    global.localStorage = localStorageMock;
+    // Assigning to global.localStorage needs casting to satisfy TypeScript
+    global.localStorage = localStorageMock as unknown as Storage;
     vi.resetAllMocks();
   });
 
@@ -23,10 +42,11 @@ describe('generateImagesWithOpenAI', () => {
 
   it('returns images on success', async () => {
     localStorageMock.getItem.mockReturnValue('test-key');
-    (fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({ // Use the typed mockFetch
       ok: true,
       json: async () => ({ data: [{ b64_json: 'abc123' }] }),
-    });
+    } as MockFetchResponse); // Cast to MockFetchResponse
+
     const images = await generateImagesWithOpenAI({
       prompt: 'cat',
       quality: 'mid',
@@ -38,10 +58,11 @@ describe('generateImagesWithOpenAI', () => {
 
   it('throws error on API error', async () => {
     localStorageMock.getItem.mockReturnValue('test-key');
-    (fetch as any).mockResolvedValue({
+    mockFetch.mockResolvedValue({ // Use the typed mockFetch
       ok: false,
       json: async () => ({ error: { message: 'API error' } }),
-    });
+    } as MockFetchResponse); // Cast to MockFetchResponse
+
     await expect(
       generateImagesWithOpenAI({
         prompt: 'cat',
